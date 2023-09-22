@@ -1,27 +1,43 @@
 const express = require('express');
 const router = express.Router();
 
-// Define the studentArray here
-let studentArray = [];
+// Create a MySQL connection
+const mysql = require('mysql2');
+const connection = mysql.createConnection({
+  host: 'localhost',         // Replace with your MySQL server host
+  user: 'root',              // Your MySQL username
+  password: 'Blessme@12',    // Your MySQL password
+  database: 'school_management', // Replace with your database name
+});
 
 // Student view his/her detail by ID
 router.get('/view/:id', (req, res) => {
   const studentId = req.params.id;
-  // Implement code to fetch and return the student's details by ID
-  // Fetch student details from the studentArray
-  const student = studentArray.find((student) => student.id === studentId);
-  if (student) {
-    if (req.session.username === 'student') {
-      // User is authenticated
-      res.status(200).json({ message: `Student details for ID ${studentId}`, student });
+
+  // Implement code to fetch and return the student's details by ID from the database
+  const sql = 'SELECT * FROM Students WHERE studid = ?';
+
+  connection.query(sql, [studentId], (err, results) => {
+    if (err) {
+      console.error('Error fetching student details:', err);
+      res.status(500).json({ message: 'Internal Server Error' });
     } else {
-      // User is not authenticated
-      res.status(401).json({ message: 'Unauthorized' });
+      if (results.length > 0) {
+        // Student details found
+        const student = results[0]; // Assuming the query returns a single student
+        if (req.session && req.session.username === 'student') {
+          // User is authenticated
+          res.status(200).json({ message: `Student details for ID ${studentId}`, student });
+        } else {
+          // User is not authenticated
+          res.status(401).json({ message: 'Unauthorized' });
+        }
+      } else {
+        // Student with the given ID was not found
+        res.status(404).json({ message: `Student with ID ${studentId} not found` });
+      }
     }
-  } else {
-    // Student with the given ID is not found
-    res.status(404).json({ message: `Student with ID ${studentId} not found` });
-  }
+  });
 });
 
 // Other CRUD routes for students
