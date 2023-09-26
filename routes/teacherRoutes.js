@@ -1,14 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2');
-
-// Create a MySQL connection
-const connection = mysql.createConnection({
-  host: 'localhost', // Change to your MySQL server host
-  user: 'root',      // Your MySQL username
-  password: 'Blessme@12', // Your MySQL password
-  database: 'school_management', // Replace with your database name
-});
+const pool = require('../config/db'); // Import the connection pool from db.js
 
 // Teacher can update student detail by ID
 router.put('/update/:id', (req, res) => {
@@ -19,7 +11,7 @@ router.put('/update/:id', (req, res) => {
   // You would typically perform a SQL UPDATE operation here
   const sql = 'UPDATE Students SET ? WHERE id = ?'; // Change "Students" to your actual table name
 
-  connection.query(sql, [updatedData, studentId], (err, results) => {
+  pool.query(sql, [updatedData, studentId], (err, results) => {
     if (err) {
       console.error('Error updating student details:', err);
       res.status(500).json({ message: 'Internal Server Error' });

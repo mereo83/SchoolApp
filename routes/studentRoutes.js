@@ -1,14 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
-// Create a MySQL connection
-const mysql = require('mysql2');
-const connection = mysql.createConnection({
-  host: 'localhost',         // Replace with your MySQL server host
-  user: 'root',              // Your MySQL username
-  password: 'Blessme@12',    // Your MySQL password
-  database: 'school_management', // Replace with your database name
-});
+const pool = require('../config/db'); // Import the connection pool from db.js
 
 // Student view his/her detail by ID
 router.get('/view/:id', (req, res) => {
@@ -17,7 +9,7 @@ router.get('/view/:id', (req, res) => {
   // Implement code to fetch and return the student's details by ID from the database
   const sql = 'SELECT * FROM Students WHERE studid = ?';
 
-  connection.query(sql, [studentId], (err, results) => {
+  pool.query(sql, [studentId], (err, results) => {
     if (err) {
       console.error('Error fetching student details:', err);
       res.status(500).json({ message: 'Internal Server Error' });

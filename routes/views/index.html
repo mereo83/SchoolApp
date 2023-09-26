@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Form</title>
+</head>
+<body>
+    <header>
+        <!-- Display the user's name after they log in -->
+        <div id="user-info"></div>
+    </header>
+    <main>
+        <!-- Receptionist Form -->
+        <form id="receptionist-form" action="/receptionist_action" method="POST">
+            <!-- Receptionist-specific form fields go here -->
+            <!-- For example, student registration fields -->
+            <h2>Receptionist</h2>
+            <label for="studid">Student ID:</label>
+            <input type="text" id="studid" name="studid" required>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <!-- Add more fields as needed -->
+            <button type="submit">Register Student</button>
+        </form>
+
+        <!-- Student Form -->
+        <form id="student-form" action="/student_action" method="GET">
+            <!-- Student-specific form fields go here -->
+            <h2>Student</h2>
+            <label for="student-id">Enter Your Student ID:</label>
+            <input type="text" id="student-id" name="student_id" required>
+            <button type="submit">View Details</button>
+        </form>
+
+        <!-- Teacher Form -->
+        <form id="teacher-form" action="/teacher_action" method="POST">
+            <!-- Teacher-specific form fields go here -->
+            <h2>Teacher</h2>
+            <label for="student-id-update">Student ID:</label>
+            <input type="text" id="student-id-update" name="student_id" required>
+            <!-- Add more fields for updating student details -->
+            <button type="submit">Update Student Details</button>
+        </form>
+
+        <!-- Principal Form -->
+        <form id="principal-form" action="/principal_action" method="POST">
+            <!-- Principal-specific form fields go here -->
+            <h2>Principal</h2>
+            <label for="student-id-delete">Student ID:</label>
+            <input type="text" id="student-id-delete" name="student_id" required>
+            <!-- Add more fields for deleting student details -->
+            <button type="submit">Delete Student</button>
+        </form>
+    </main>
+</body>
+</html>
